@@ -119,17 +119,6 @@ class Record:
     def get_birthday(self):
         return self.birthday.value
 
-    def parser_json(self):
-        if len(self.phones) == 0:
-            return self.name.value, self.birthday.value, self.phones
-        elif len(self.phones) == 1:
-            return self.name.value, self.birthday.value, self.phones[0].value
-        elif len(self.phones) > 1:
-            phones_list = []
-            for phon in self.phones:
-                phones_list.append(phon.value)
-            return self.name.value, self.birthday.value, phones_list
-
 
 class AddressBook(UserDict):
     """

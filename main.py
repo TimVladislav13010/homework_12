@@ -1,3 +1,4 @@
+import json
 from addressbook_class import AddressBook, Record
 
 
@@ -129,6 +130,56 @@ def delete_user(name):
     return f"Запис ({record.return_record()}) видалено з словника."
 
 
+def deserialized_json(data):
+    """
+    Функція для десереалізації даних з json.
+    :param data:
+    :return:
+    """
+    for contact in data.values():
+        record = Record(contact["name"])
+        for phones in contact["phones"]:
+            record.add_phone(phones)
+        record.change_birthday_record(contact["birthday"])
+        PHONE_BOOK.add_record(record)
+
+
+def load_json():
+    """
+    Функція для завантаження данних з save_data.json файлу.
+    :return:
+    """
+    with open("save_data.json") as file:
+        saves_data = json.load(file)
+    return saves_data
+
+
+def parser_json():
+    """
+    Функція парсингу даних для завантаження в json.
+    :return:
+    """
+    new_data = {}
+    for names, record in PHONE_BOOK.data.items():
+
+        if len(record.phones) == 0:
+            new_data[record.name.value] = {"name": record.name.value, "phones": [], "birthday": record.birthday.value}
+
+        elif len(record.phones) == 1:
+            phone_list = []
+            for phon in record.phones:
+                phone_list.append(phon.value)
+            new_data[record.name.value] = {"name": record.name.value, "phones": phone_list, "birthday": record.birthday.value}
+
+        elif len(record.phones) > 1:
+            phone_list = []
+            for phon in record.phones:
+                phone_list.append(phon.value)
+            new_data[record.name.value] = {"name": record.name.value, "phones": phone_list, "birthday": record.birthday.value}
+
+    return new_data
+
+
 @input_error
 def user_add_birthday(data):
     """
@@ -202,6 +253,17 @@ def phone(name):
     return f"Інфомацію знайдено:\n{phones}"
 
 
+def serialized_to_json():
+    """
+    Функція збереження json в файл - save_data.json.
+    :return:
+    """
+    with open("save_data.json", "w") as file:
+        load_jsons = parser_json()
+        json.dump(load_jsons, file, indent=4)
+    return f"Данні успішно збережені."
+
+
 def show_all():
     """
     Функція для відображення всієї телефонної книги
@@ -249,6 +311,7 @@ def helps():
            "user_add_birthday - (user_add_birthday 00.00.0000/д.м.р)\n" \
            "user_delete_birthday - (user_delete_birthday name)\n" \
            "days_to_birthday - (days_to_birthday name)\n"\
+           "save_data\n"\
            "show_all\n"\
            "good_bye, close, exit, .\n"
 
@@ -264,6 +327,7 @@ USER_COMMANDS = {
     "days_to_birthday": days_to_birthday,
     "delete_user": delete_user,
     "phone": phone,
+    "save_data": serialized_to_json,
     "show_all": show_all,
     "good_bye": good_bye,
     "close": good_bye,
@@ -277,6 +341,7 @@ def main():
     """
     Логіка роботи бота помічника
     """
+    deserialized_json(load_json())
     while True:
         user_input = input("Введіть будь ласка команду: (або використай команду help)\n")
         result = change_input(user_input)
