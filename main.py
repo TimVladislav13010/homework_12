@@ -1,4 +1,5 @@
 import json
+import os.path
 from addressbook_class import AddressBook, Record
 
 
@@ -146,7 +147,7 @@ def deserialized_json(data):
 
 def load_json():
     """
-    Функція для завантаження данних з save_data.json файлу.
+    Функція для завантаження даних з save_data.json файлу.
     :return:
     """
     with open("save_data.json") as file:
@@ -341,7 +342,9 @@ def main():
     """
     Логіка роботи бота помічника
     """
-    deserialized_json(load_json())
+    if os.path.isfile("save_data.json"):  # перевірка на те чи файл існує.
+        deserialized_json(load_json())
+
     while True:
         user_input = input("Введіть будь ласка команду: (або використай команду help)\n")
         result = change_input(user_input)
