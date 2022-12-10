@@ -265,6 +265,29 @@ def serialized_to_json():
     return f"Данні успішно збережені."
 
 
+def search_contact(data):
+    """
+    Функція для пошуку контактів.
+
+    Пошук здійснюється за номером або за ім'ям.
+    :param data:
+    :return:
+    """
+    data = data.strip().lower()
+    matches_list = []
+    for record in PHONE_BOOK.values():
+
+        if data in record.name.value.lower():
+            matches_list.append(record.name.value)
+
+        elif data.isdigit():
+            for number in record.phones:
+                if data in number.value:
+                    matches_list.append(record.name.value)
+
+    return show_contact(matches_list)
+
+
 def show_all():
     """
     Функція для відображення всієї телефонної книги
@@ -281,6 +304,24 @@ def show_all():
         list_info += 1
 
     return show_number
+
+
+def show_contact(matches):
+    """
+    Функція для відображення збігів за пошуком у функції search_contact.
+    :param matches:
+    :return:
+    """
+    if len(matches) == 0 or matches is None:
+        return f"Збігів не знайдено."
+
+    elif len(matches) > 0:
+        return_text = ""
+
+        for match in matches:
+            return_text += f"Збіг в контакті - {match}\n"
+
+        return return_text
 
 
 def good_bye():
@@ -312,6 +353,7 @@ def helps():
            "user_add_birthday - (user_add_birthday 00.00.0000/д.м.р)\n" \
            "user_delete_birthday - (user_delete_birthday name)\n" \
            "days_to_birthday - (days_to_birthday name)\n"\
+           "search - (search data)\n"\
            "save_data\n"\
            "show_all\n"\
            "good_bye, close, exit, .\n"
@@ -330,6 +372,7 @@ USER_COMMANDS = {
     "phone": phone,
     "save_data": serialized_to_json,
     "show_all": show_all,
+    "search": search_contact,
     "good_bye": good_bye,
     "close": good_bye,
     "exit": good_bye,

@@ -42,6 +42,9 @@ class Record:
             phone_numbers += f"{phone.value}, "
         return f"{self.name.value}: {phone_numbers[:-2]}. ДН: {self.birthday.value}"
 
+    def return_info(self):
+        return self.name.value, self.phones
+
     def change_birthday_record(self, new_birthday):
         self.birthday = Birthday(new_birthday)
 
