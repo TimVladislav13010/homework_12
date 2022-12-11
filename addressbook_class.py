@@ -1,4 +1,3 @@
-import pickle
 from collections import UserDict
 from datetime import datetime
 from pickle import load, dump
@@ -160,10 +159,16 @@ class AddressBook(UserDict):
             yield info_list
 
     def dump_data(self):
+        """
+        Метод для сереалізації даних в файл save_data.bin за допомогою pickle.
+        """
         with open("save_data.bin", "wb") as file:
             dump(self.data, file)
 
     def load_data(self):
+        """
+        Метод для десереалізації даних з файлу save_data.bin за допомогою pickle.
+        """
         with open("save_data.bin", "rb") as file:
             new_data = load(file)
             self.data = new_data
