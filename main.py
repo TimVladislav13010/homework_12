@@ -1,4 +1,4 @@
-import json
+# import json
 import os.path
 from addressbook_class import AddressBook, Record
 
@@ -370,7 +370,7 @@ USER_COMMANDS = {
     "days_to_birthday": days_to_birthday,
     "delete_user": delete_user,
     "phone": phone,
-    "save_data": serialized_to_json,
+    # "save_data": serialized_to_json,  # для збереження в json
     "show_all": show_all,
     "search": search_contact,
     "good_bye": good_bye,
@@ -385,8 +385,11 @@ def main():
     """
     Логіка роботи бота помічника
     """
-    if os.path.isfile("save_data.json"):  # перевірка на те чи файл існує.
-        deserialized_json(load_json())
+    # if os.path.isfile("save_data.json"):  # перевірка на те чи файл існує.
+    #     deserialized_json(load_json())  # десеріалізація з json файлу
+
+    if os.path.isfile("save_data.bin"):  # перевірка на те чи файл існує.
+        PHONE_BOOK.load_data()
 
     while True:
         user_input = input("Введіть будь ласка команду: (або використай команду help)\n")
@@ -394,6 +397,8 @@ def main():
         print(result)
         if result == "Good Bye!":
             break
+
+    PHONE_BOOK.dump_data()
 
 
 if __name__ == "__main__":

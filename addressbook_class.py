@@ -1,5 +1,7 @@
+import pickle
 from collections import UserDict
 from datetime import datetime
+from pickle import load, dump
 import re
 
 
@@ -156,6 +158,15 @@ class AddressBook(UserDict):
 
         if info_list:
             yield info_list
+
+    def dump_data(self):
+        with open("save_data.bin", "wb") as file:
+            dump(self.data, file)
+
+    def load_data(self):
+        with open("save_data.bin", "rb") as file:
+            new_data = load(file)
+            self.data = new_data
 
 
 class Field:
