@@ -389,7 +389,7 @@ def main():
     #     deserialized_json(load_json())  # десеріалізація з json файлу
 
     if os.path.isfile("save_data.bin"):  # перевірка на те чи файл існує.
-        PHONE_BOOK.load_data()
+        PHONE_BOOK.load_data()  # завантаження збережених даних з файлу save_data.bin
 
     while True:
         user_input = input("Введіть будь ласка команду: (або використай команду help)\n")
@@ -398,7 +398,7 @@ def main():
         if result == "Good Bye!":
             break
 
-    PHONE_BOOK.dump_data()
+    PHONE_BOOK.dump_data()  # збереження даних при закритті програми в файл save_data.bin
 
 
 if __name__ == "__main__":
